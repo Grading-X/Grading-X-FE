@@ -20,7 +20,7 @@ export default function CourseAnnouncementPage() {
     <div className="flex flex-col items-start justify-start w-full h-full overflow-y-auto">
       <div className="flex flex-col w-full h-full">
         {data?.announcementResponses.map((announcement) => (
-          <div key={announcement.id} className="w-full border-t border-b p-4">
+          <div key={announcement.id} className="w-full border-b p-4">
             <div className="flex flex-row justify-start items-center">
               <div>
                 {announcement.author}
@@ -35,7 +35,7 @@ export default function CourseAnnouncementPage() {
                 </div>
               </div>
               <div className="mr-4">
-                {announcement.createdDate ?? "생성일"}
+                {announcement.createdDate ?? ""}
               </div>
             </div>
           </div>

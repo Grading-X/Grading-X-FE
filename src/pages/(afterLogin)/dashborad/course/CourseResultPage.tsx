@@ -67,7 +67,7 @@ export default function CourseResultPage() {
 
   return (
     <div className="flex flex-col items-start justify-start w-full h-full overflow-y-auto">
-      <div className="flex flex-row">
+      <div className="flex flex-row mt-4">
         <Tabs defaultValue={selectedExamId == null ? '0' : selectedExamId.toString()} className="w-full">
           <TabsList>
             {data?.examContents.map((exam) => (
@@ -86,11 +86,11 @@ export default function CourseResultPage() {
         {
           selectedExamId &&
             <>
-                <div className="w-full">
+                <div className="w-full mt-2 ml-2">
                     키워드 사용
                 </div>
                 <input type={"checkbox"} onChange={(e) => setUseKeyword(e.target.checked)}/>
-                <div className="w-6"/>
+                <div className="w-2 mr-2"/>
                 <Button onClick={() => handleGradeClick(selectedExamId)}>
                     <div>채점하기</div>
                 </Button>
