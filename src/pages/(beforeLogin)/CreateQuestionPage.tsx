@@ -66,8 +66,9 @@ export const CreateQuestionPage = () => {
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-between">
-      <h1>Upload a File</h1>
-      <div className="flex flex-row items-stretch">
+      <h1 className="text-[20px] my-4">문제 출제</h1>
+      <p className="mb-4">텍스트 혹은 pdf 파일을 업로드해주세요.</p>
+      <div className="flex flex-row items-stretch mb-4">
         <form onSubmit={handleSubmit} encType="mult-part/form-data" className="border p-4 w-[600px]">
 
           <Input type="file" onChange={handleFileChange}/>
