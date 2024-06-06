@@ -12,6 +12,12 @@ import {Label} from "@/components/ui/label.tsx";
 import CalendarWithTimePicker from "@/components/common/CalendarWithTimePicker.tsx";
 import {GreenButton} from "@/components/ui/GreenButton.tsx";
 
+function parseUrl(url: string) {
+  const examId = parseInt(url.split("/")[5] || "0");
+  const courseId = parseInt(url.split("/")[3] || "0");
+  return [examId, courseId];
+}
+
 export default function ExamDetailEditPage() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -19,8 +25,7 @@ export default function ExamDetailEditPage() {
 
   const currentUrl = location.pathname;
   const prevUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
-  const examId = parseInt(currentUrl.split("/")[5] || "0");
-  const courseId = parseInt(currentUrl.split("/")[3] || "0");
+  const [examId, courseId] = parseUrl(currentUrl);
 
 
   const {data} = useQuery<ExamDetail, Object, ExamDetail, [_1: string, _2:string, _3: number]>({

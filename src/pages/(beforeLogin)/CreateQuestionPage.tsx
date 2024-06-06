@@ -1,32 +1,65 @@
 import {useState} from "react";
 import {createQuestionByAI, QuestionAnswerResponse} from "@/api/question/question.api.ts";
+import {Input} from "@/components/ui/input.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import {Oval} from "react-loader-spinner";
+
+interface QuestionPageState {
+  selectedFile: File | null;
+  response: QuestionAnswerResponse | null;
+  error: string | null;
+  loading: boolean;
+}
 
 export const CreateQuestionPage = () => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [response, setResponse] = useState<QuestionAnswerResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
+
+  const [questionState, setQuestionState] = useState<QuestionPageState>({
+    selectedFile: null,
+    response: null,
+    error: null,
+    loading: false,
+  });
+
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
-      setSelectedFile(event.target.files[0]);
+      setQuestionState({
+        ...questionState,
+        selectedFile: event.target.files[0],
+      });
     }
   };
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!selectedFile) {
-      setError('Please select a file to upload.');
+    if (!questionState.selectedFile) {
+      setQuestionState({
+        ...questionState,
+        error: '업로드할 파일을 선택해주세요.',
+      });
       return;
     }
 
     const formData = new FormData();
-    formData.append('file', selectedFile);
+    formData.append('file', questionState.selectedFile);
 
     try {
+      setQuestionState({
+        ...questionState,
+        loading: true,
+      });
       const result = await createQuestionByAI(formData);
-      setResponse(result);
-      setError(null);
+      setQuestionState({
+        ...questionState,
+        response: result,
+        error: null,
+        loading: false,
+      });
     } catch (error) {
-      setError('Error uploading file.');
+      setQuestionState({
+        ...questionState,
+        error: '파일 업로드 중 오류가 발생했습니다.',
+        loading: false,
+      });
       console.error(error);
     }
   };
@@ -36,20 +69,24 @@ export const CreateQuestionPage = () => {
       <h1>Upload a File</h1>
       <div className="flex flex-row items-stretch">
         <form onSubmit={handleSubmit} encType="mult-part/form-data" className="border p-4 w-[600px]">
-          <input type="file" onChange={handleFileChange}/>
-          <button type="submit">업로드</button>
-        </form>
-        {error && <p style={{color: 'red'}}>{error}</p>}
-      </div>
 
-      <div className="h-32"/>
-      {response && (
-        response.questions_answers.map((qa, index) => (
+          <Input type="file" onChange={handleFileChange}/>
+          <Button disabled={questionState.selectedFile === null} type="submit" className="mt-10 w-full border-buttonGreenBorder bg-buttonGreen
+         text-white hover:text-white hover:bg-[#38996b]/80 focus:ring-[#3ecf8e]">업로드</Button>
+        </form>
+      </div>
+      {questionState.error && <p style={{color: 'red'}}>{questionState.error}</p>}
+      {questionState.loading &&
+          <Oval/>
+      }
+      <div className="h-20"/>
+      {questionState.response && (
+        questionState.response.questions_answers.map((qa, index) => (
           <div key={index} className="border rounded-md p-4 mb-4 w-[600px] flex flex-col justify-between">
 
-            <p>문제: {qa.답안}</p>
+            <p>문제: {qa.문제}</p>
             <div className="h-12" />
-            <p>답안: {qa.문제}</p>
+            <p>답안: {qa.답안}</p>
           </div>
         ))
       )}
