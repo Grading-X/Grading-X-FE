@@ -6,7 +6,7 @@ import {MEMBER} from "@/const/data.ts";
 import {useMemberStore} from "@/store/member.store.ts";
 import {cn} from "@/lib/utils.ts";
 import {buttonVariants} from "@/components/ui/button.tsx";
-import {LibraryBig, LogOut, LucideIcon, Menu, Users2} from "lucide-react";
+import {Home, LibraryBig, LogOut, LucideIcon, Menu, Users2} from "lucide-react";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
 
@@ -42,19 +42,19 @@ export default function NavMenu({isCollapsed}: Props) {
 
   const links: NavLink[] = [
     {
-      title: 'Dashboard',
+      title: '대시보드',
       icon: Menu,
       variant: 'ghost',
       to: '/dashboard'
     },
     {
-      title: 'Courses',
+      title: '강의',
       icon: LibraryBig,
       variant: location.pathname.includes('course') ? 'default' : 'ghost',
       to: '/dashboard/course'
     },
     {
-      title: 'Account',
+      title: '계정',
       icon: Users2,
       variant: location.pathname.includes('account') ? 'default' : 'ghost',
       to: '/dashboard/account'
@@ -114,32 +114,63 @@ export default function NavMenu({isCollapsed}: Props) {
           <Separator/>
 
           {isCollapsed ? (
-            <Tooltip delayDuration={0}>
-              <TooltipTrigger asChild>
-                <Link to={'/'} onClick={onLogout}
-                      className={cn(
-                        buttonVariants({variant: 'ghost', size: "icon"}),
-                        "h-9 w-9",
-                      )}>
+            <>
 
-                  <LogOut className="h-4 w-4"/>
-                  <span className="sr-only">로그아웃</span>
+              <Tooltip delayDuration={0}>
+                <TooltipTrigger asChild>
+                  <Link to={'/'}
+                        className={cn(
+                          buttonVariants({variant: 'ghost', size: "icon"}),
+                          "h-9 w-9",
+                        )}>
 
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent side="right" className="flex items-center gap-4">
-                로그아웃
-              </TooltipContent>
-            </Tooltip>
+                    <Home className="h-4 w-4"/>
+                    <span className="sr-only">메인화면</span>
+
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="right" className="flex items-center gap-4">
+                  메인화면
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip delayDuration={0}>
+                <TooltipTrigger asChild>
+                  <Link to={'/'} onClick={onLogout}
+                        className={cn(
+                          buttonVariants({variant: 'ghost', size: "icon"}),
+                          "h-9 w-9",
+                        )}>
+
+                    <LogOut className="h-4 w-4"/>
+                    <span className="sr-only">로그아웃</span>
+
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="right" className="flex items-center gap-4">
+                  로그아웃
+                </TooltipContent>
+              </Tooltip>
+
+            </>
           ) : (
-            <Link to={'/'} onClick={onLogout}
-                  className={cn(
-                    buttonVariants({variant: 'ghost', size: "sm"}),
-                    "justify-start"
-                  )}>
-              <LogOut className="h-4 w-4 mr-2"/>
-              로그아웃
-            </Link>
+            <>
+              <Link to={'/'}
+                    className={cn(
+                      buttonVariants({variant: 'ghost', size: "sm"}),
+                      "justify-start"
+                    )}>
+                <Home className="h-4 w-4 mr-2"/>
+                메인화면
+              </Link>
+              <Link to={'/'} onClick={onLogout}
+                    className={cn(
+                      buttonVariants({variant: 'ghost', size: "sm"}),
+                      "justify-start"
+                    )}>
+                <LogOut className="h-4 w-4 mr-2"/>
+                로그아웃
+              </Link>
+            </>
           )}
         </nav>
       </div>
