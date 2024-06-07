@@ -76,7 +76,14 @@ export default function GuestExamTakePage() {
       email: guestEmail,
       answers : examAnswers
     }
-    await saveExamAnswer(examId, request);
+    try{
+      await saveExamAnswer(examId, request);
+      nav(-1);
+    }catch(e){
+      console.log(e);
+      window.alert("에러가 발생했습니다.");
+    }
+
   }
 
   return (
